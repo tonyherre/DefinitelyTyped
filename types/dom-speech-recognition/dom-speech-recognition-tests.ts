@@ -37,6 +37,8 @@ const speechRecognition2: SpeechRecognition = {
     lang: "eng",
     maxAlternatives: 2,
     processLocally: true,
+    unspokenPunctuation: true,
+    phrases: [new SpeechRecognitionPhrase("hello", 5.0)],
     onaudioend: null,
     onaudiostart: null,
     onend: null,
@@ -81,7 +83,7 @@ const speechRecognitionEvent = new SpeechRecognitionEvent("type", speechRecognit
 const speechRecognitionEvent2 = new webkitSpeechRecognitionEvent("type", speechRecognitionEventInit);
 
 const speechRecognitionErrorEventInit: SpeechRecognitionErrorEventInit = {
-    error: "aborted",
+    error: "phrases-not-supported",
     message: "abcde",
 };
 const speechRecognitionErrorEvent = new SpeechRecognitionErrorEvent("type", speechRecognitionErrorEventInit);
@@ -89,6 +91,7 @@ const speechRecognitionErrorEvent = new SpeechRecognitionErrorEvent("type", spee
 const speechRecognitionOptions: SpeechRecognitionOptions = {
     langs: ["en-GB"],
     processLocally: true,
+    quality: "dictation",
 };
 
 (async () => {

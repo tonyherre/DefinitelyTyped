@@ -21,6 +21,8 @@ interface SpeechRecognition extends EventTarget {
     lang: string;
     maxAlternatives: number;
     processLocally: boolean;
+    unspokenPunctuation: boolean;
+    phrases: SpeechRecognitionPhrase[];
     onaudioend: ((this: SpeechRecognition, ev: Event) => any) | null;
     onaudiostart: ((this: SpeechRecognition, ev: Event) => any) | null;
     onend: ((this: SpeechRecognition, ev: Event) => any) | null;
@@ -57,10 +59,13 @@ interface SpeechRecognition extends EventTarget {
     ): void;
 }
 
+type SpeechRecognitionQuality = "command" | "dictation" | "conversation";
+
 // https://wicg.github.io/speech-api/#dictdef-speechrecognitionoptions
 interface SpeechRecognitionOptions {
     langs: string[];
     processLocally: boolean;
+    quality?: SpeechRecognitionQuality;
 }
 
 type AvailabilityStatus =
@@ -103,7 +108,8 @@ type SpeechRecognitionErrorCode =
     | "network"
     | "no-speech"
     | "not-allowed"
-    | "service-not-allowed";
+    | "service-not-allowed"
+    | "phrases-not-supported";
 
 // https://wicg.github.io/speech-api/#dictdef-speechrecognitionerroreventinit
 interface SpeechRecognitionErrorEventInit extends EventInit {
@@ -143,6 +149,16 @@ interface SpeechGrammarList {
 }
 
 declare var SpeechGrammarList: { prototype: SpeechGrammarList; new(): SpeechGrammarList };
+
+interface SpeechRecognitionPhrase {
+    readonly phrase: string;
+    readonly boost: number;
+}
+
+declare var SpeechRecognitionPhrase: {
+    prototype: SpeechRecognitionPhrase;
+    new(phrase: string, boost?: number): SpeechRecognitionPhrase;
+};
 
 // prefixed global variables in Chrome; should match the equivalents above
 // https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API#chrome_support
